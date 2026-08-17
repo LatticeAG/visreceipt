@@ -64,7 +64,7 @@
     }
   },
   "devDependencies": {
-    "@latticeag/visreplay": "link:/home/ubuntu/repos/visreplay",
+    "@latticeag/visreplay": "^1.1.1",
     "@types/node": "^20.0.0",
     "typescript": "^5.8",
     "vitest": "^3.2.7"

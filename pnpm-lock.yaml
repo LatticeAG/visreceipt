@@ -16,8 +16,8 @@ importers:
         version: 3.25.76
     devDependencies:
       '@latticeag/visreplay':
-        specifier: link:/home/ubuntu/repos/visreplay
-        version: link:../repos/visreplay
+        specifier: ^1.1.1
+        version: 1.1.1
       '@types/node':
         specifier: ^20.0.0
         version: 20.19.43
@@ -188,6 +188,11 @@ packages:
 
   '@jridgewell/sourcemap-codec@1.5.5':
     resolution: {integrity: sha512-cYQ9310grqxueWbl+WuIUIaiUaDcj7WOq5fVhEljNVgRfOUhY9fy2zTvfoqWsnebh8Sl70VScFbICvJnLKB0Og==}
+
+  '@latticeag/visreplay@1.1.1':
+    resolution: {integrity: sha512-hrUim3J5Bqapz46NHAHYbwTAUVMn+tSLztiixbyfd6d6unMQkY2uOUp+MGu0xKSY6Wvya7JWxtlJutRgRFCQ5A==}
+    engines: {node: '>=20'}
+    hasBin: true
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     resolution: {integrity: sha512-oTXEIha4SsuXdTA4Iyskj0kpdx2yVXdhd75c2v3xGrHFfVMsbhTPZU/nMPL4sWKo4pBHm3aucLaqGlF696dTyQ==}
@@ -671,6 +676,10 @@ snapshots:
     optional: true
 
   '@jridgewell/sourcemap-codec@1.5.5': {}
+
+  '@latticeag/visreplay@1.1.1':
+    dependencies:
+      commander: 11.1.0
 
   '@napi-rs/lzma-linux-x64-gnu@1.5.1':
     optional: true
