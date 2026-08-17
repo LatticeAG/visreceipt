@@ -1,0 +1,72 @@
+{
+  "name": "@latticeag/visreceipt",
+  "version": "0.1.0",
+  "description": "Attested evidence ledger for agent actions",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "default": "./dist/index.js"
+    }
+  },
+  "bin": {
+    "visreceipt": "dist/cli.js"
+  },
+  "scripts": {
+    "build": "tsc -p tsconfig.build.json",
+    "prepack": "npm run build",
+    "test": "vitest run",
+    "check": "tsc --noEmit && vitest run"
+  },
+  "author": "LatticeAG",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/LatticeAG/visreceipt.git"
+  },
+  "homepage": "https://github.com/LatticeAG/visreceipt",
+  "bugs": {
+    "url": "https://github.com/LatticeAG/visreceipt/issues"
+  },
+  "keywords": [
+    "agent",
+    "evidence",
+    "hash-chain",
+    "observability",
+    "receipt"
+  ],
+  "sideEffects": false,
+  "engines": {
+    "node": ">=20"
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "dependencies": {
+    "commander": "^11",
+    "zod": "^3"
+  },
+  "peerDependencies": {
+    "@latticeag/events": "^0.1.0",
+    "@latticeag/visreplay": "^1.1.1"
+  },
+  "peerDependenciesMeta": {
+    "@latticeag/events": {
+      "optional": true
+    },
+    "@latticeag/visreplay": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "@latticeag/visreplay": "link:/home/ubuntu/repos/visreplay",
+    "@types/node": "^20.0.0",
+    "typescript": "^5.8",
+    "vitest": "^3.2.7"
+  }
+}

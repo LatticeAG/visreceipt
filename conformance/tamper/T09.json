@@ -1,0 +1,7 @@
+{
+  "id": "T09",
+  "reason": "payload_mismatch",
+  "seq": 3,
+  "mode": "with-payload",
+  "notes": "Edit .vrs tool_result.result, keep .vrc. verify --with-payload fails at the tool_result seal seq."
+}

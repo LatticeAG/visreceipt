@@ -1,0 +1,6 @@
+{
+  "id": "T13",
+  "reason": "history_mutated",
+  "mode": "attach",
+  "notes": "Duplicate eventId with a new body on re-save. attach throws VRC2010 and refuses later writes."
+}

@@ -1,0 +1,11 @@
+[
+  { "input": { "b": 2, "a": 1 }, "expected": "{\"a\":1,\"b\":2}" },
+  { "input": [1, { "z": 1, "a": 0 }, null], "expected": "[1,{\"a\":0,\"z\":1},null]" },
+  { "input": { "": 0, "\u20ac": "Euro" }, "expected": "{\"\":0,\"\u20ac\":\"Euro\"}" },
+  { "input": true, "expected": "true" },
+  { "input": false, "expected": "false" },
+  { "input": null, "expected": "null" },
+  { "input": 0, "expected": "0" },
+  { "input": 1.5, "expected": "1.5" },
+  { "input": "quote\"slash\\", "expected": "\"quote\\\"slash\\\\\"" }
+]

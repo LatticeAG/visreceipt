@@ -1,0 +1,20 @@
+{
+  "commitment": {
+    "freeze_point": "session_start",
+    "kind": "genesis",
+    "ledger_id": "led_11111111-1111-4111-8111-111111111111",
+    "nonce": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "payload_sha256": "44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a",
+    "prev_hash": "c07b4a4613d47b21a81f4faf2aa50cfc5cbf379a630aba325094cf04f6b836fb",
+    "seq": 1,
+    "subject_id": "ses_11111111-1111-4111-8111-111111111111",
+    "subject_kind": "session",
+    "ts": "2026-08-17T14:48:00.000Z",
+    "v": "visreceipt/v1"
+  },
+  "jcs": "{\"freeze_point\":\"session_start\",\"kind\":\"genesis\",\"ledger_id\":\"led_11111111-1111-4111-8111-111111111111\",\"nonce\":\"aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa\",\"payload_sha256\":\"44136fa355b3678a1146ad16f7e8649e94fb4fc21fe77e8310c060f61caaff8a\",\"prev_hash\":\"c07b4a4613d47b21a81f4faf2aa50cfc5cbf379a630aba325094cf04f6b836fb\",\"seq\":1,\"subject_id\":\"ses_11111111-1111-4111-8111-111111111111\",\"subject_kind\":\"session\",\"ts\":\"2026-08-17T14:48:00.000Z\",\"v\":\"visreceipt/v1\"}",
+  "hash": "1a8024fe4e29c6ac6083d99472ba23afeead9f649726b51028f866bf3fa3b73d",
+  "receipt_id": "rcp_DJ4SKTAF7MM9A0KNAX80JXVAQW",
+  "genesis_prev": "c07b4a4613d47b21a81f4faf2aa50cfc5cbf379a630aba325094cf04f6b836fb",
+  "ledger_id": "led_11111111-1111-4111-8111-111111111111"
+}
