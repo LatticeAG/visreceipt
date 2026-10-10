@@ -48,7 +48,7 @@ Built by [LatticeAG](https://github.com/LatticeAG).
 
 - **Agent logs are mutable; receipts aren't** - each record links to the previous hash, so silent edits, deletions, or reorderings break the chain at an exact, named link.
 - **Pin the head off-disk** - `verify --export --expect-head` checks the chain against a committed `chain_head` stored elsewhere, closing the rewrite-the-whole-file loophole.
-- **Sealed sessions** - `assertSealed`/`gate` require a matching freeze-point seal before downstream automation proceeds.
+- **Sealed sessions** - `assertSealed`/`gate` require a matching freeze-point seal before downstream automation proceeds. `seal --from-vrs` appends one only when the session has `endedAt` or you pass `--session-end`.
 - **Redacted by default** - `inspect` redacts unless run on a TTY with `VISRECEIPT_ALLOW_UNREDACTED=1`.
 - **Sidecar-native** - the recorder stays VisReplay; the sidecar for `session.vrs` is `session.vrs.vrc` (`sidecarPath(p)` is `p + ".vrc"`).
 
@@ -65,9 +65,9 @@ Built by [LatticeAG](https://github.com/LatticeAG).
 npm install @latticeag/visreceipt
 
 # 2. Seal a session, verify it
-visreceipt seal --from-vrs session.vrs
-visreceipt verify session.vrs.vrc
-visreceipt doctor   # prints ok when the local runtime is healthy
+visreceipt seal --from-vrs session.vrs --session-end   # appends the session_end seal that gate checks
+visreceipt verify session.vrs.vrc                     # prints ok verified_through_seq=<n> head=<hex>
+visreceipt doctor                                     # prints ok when the local runtime is healthy
 
 # 3. Pin the head off-disk, then enforce it
 visreceipt verify session.vrs.vrc --expect-head <hex>
@@ -128,7 +128,7 @@ flowchart LR
 ### CLI
 
 ```bash
-visreceipt seal --from-vrs session.vrs
+visreceipt seal --from-vrs session.vrs --session-end
 visreceipt verify session.vrs.vrc
 visreceipt verify session.vrs.vrc --expect-head <hex>
 visreceipt export session.vrs.vrc --from-seq 1 --to-seq LAST --out slice.json
@@ -139,7 +139,7 @@ visreceipt gate --ledger session.vrs.vrc --subject-id SESSIONID --freeze-point s
 visreceipt doctor
 ```
 
-`export --out` writes mode `0o600`. `inspect --no-redact` needs a TTY and `VISRECEIPT_ALLOW_UNREDACTED=1`. `gate --soft` prints the error and still exits 0. `exportRange` and `inspect` live on `ReceiptLedger`; `verifyExport` checks a `visreceipt/export/1.0` slice.
+`export --out` writes mode `0o600`. `--to-seq LAST` resolves to the head seq. `verify` prints `ok verified_through_seq=<n> head=<hex>` on success (exit 0). `inspect --no-redact` needs a TTY and `VISRECEIPT_ALLOW_UNREDACTED=1`. `gate --soft` prints the error and still exits 0. `exportRange` and `inspect` live on `ReceiptLedger`; `verifyExport` checks a `visreceipt/export/1.0` slice.
 
 `assertSealed` throws `VRC2001` if the freeze is missing, `VRC2003` if the seal is older than `max_age_ms` (default 300000, `0` skips age), and `VRC2004` if the chain is not ok. It does not run tools.
 

@@ -156,6 +156,18 @@ function setVerifyExit(result: VerifyResult): void {
   process.exitCode = cliExitCode(code);
 }
 
+function printVerifyResult(result: VerifyResult, json?: boolean): void {
+  if (json) {
+    process.stdout.write(`${JSON.stringify(result)}\n`);
+  } else if (result.ok) {
+    const head = result.chain_head ? ` head=${result.chain_head}` : "";
+    process.stdout.write(`ok verified_through_seq=${result.verified_through_seq}${head}\n`);
+  } else {
+    printBroken(result);
+  }
+  setVerifyExit(result);
+}
+
 async function writePrivateFile(path: string, text: string): Promise<void> {
   await mkdir(dirname(path), { recursive: true });
   await writeFile(path, text, { encoding: "utf8", mode: 0o600 });
@@ -279,12 +291,7 @@ async function runVerify(
       expectedHead: opts.expectHead,
       expectedStartPrev: opts.expectStartPrev
     });
-    if (opts.json) {
-      process.stdout.write(`${JSON.stringify(result)}\n`);
-    } else if (!result.ok) {
-      printBroken(result);
-    }
-    setVerifyExit(result);
+    printVerifyResult(result, opts.json);
     return;
   }
   if (!path) {
@@ -309,12 +316,7 @@ async function runVerify(
       result = verifyVrsPayloads(run.records, session, result);
     }
   }
-  if (opts.json) {
-    process.stdout.write(`${JSON.stringify(result)}\n`);
-  } else if (!result.ok) {
-    printBroken(result);
-  }
-  setVerifyExit(result);
+  printVerifyResult(result, opts.json);
 }
 
 async function runExport(
@@ -328,9 +330,10 @@ async function runExport(
   }
 ): Promise<void> {
   const fromSeq = Number(opts.fromSeq);
-  const toSeq = Number(opts.toSeq);
-  if (!Number.isInteger(fromSeq) || !Number.isInteger(toSeq)) {
-    throw new Error("export requires --from-seq and --to-seq");
+  const toSeqIsLast = String(opts.toSeq).toUpperCase() === "LAST";
+  const toSeq = toSeqIsLast ? NaN : Number(opts.toSeq);
+  if (!Number.isInteger(fromSeq) || (!toSeqIsLast && !Number.isInteger(toSeq))) {
+    throw new Error("export requires --from-seq <int> and --to-seq <int|LAST>");
   }
   if (opts.embedPayload && !opts.vrs) {
     throw new Error("export --embed-payload requires --vrs");
@@ -341,7 +344,11 @@ async function runExport(
     setVerifyExit(run.fail);
     return;
   }
-  const slice = await exportRange(run.records, fromSeq, toSeq, {
+  const resolvedToSeq = toSeqIsLast ? run.records[run.records.length - 1]?.seq : toSeq;
+  if (resolvedToSeq === undefined) {
+    throw new Error("export --to-seq LAST requires a non-empty ledger");
+  }
+  const slice = await exportRange(run.records, fromSeq, resolvedToSeq, {
     embedPayload: Boolean(opts.embedPayload),
     vrsPath: opts.vrs,
     files: run.files
@@ -562,13 +569,13 @@ export function createProgram(): Command {
     .description("Export a subchain slice")
     .argument("<path>", "ledger path (.vrc)")
     .requiredOption("--from-seq <n>", "first seq inclusive", (value: string) => Number(value))
-    .requiredOption("--to-seq <n>", "last seq inclusive", (value: string) => Number(value))
+    .requiredOption("--to-seq <n>", "last seq inclusive, or LAST for the head seq")
     .option("--out <path>", "write slice JSON (default stdout)")
     .option("--embed-payload", "copy matching .vrs bodies into the slice")
     .option("--vrs <path>", "VisReplay session for --embed-payload")
     .action(async (path: string, opts: {
       fromSeq?: number;
-      toSeq?: number;
+      toSeq?: string;
       out?: string;
       embedPayload?: boolean;
       vrs?: string;
